@@ -7,6 +7,7 @@ import {
   Box,
   Button,
   Flex,
+  Textarea,
   Text,
   Select,
   Spacer,
@@ -26,21 +27,20 @@ function TranslateItem() {
             _expanded={{ bg: "#e75304", color: "white" }}
           >
             <Box flex="1" textAlign="left">
-              Section 1 title
+              オリジナル文
             </Box>
             <AccordionIcon />
           </AccordionButton>
         </h2>
         <AccordionPanel p={4}>
           <Flex direction="column">
-            <Flex>
-              <Text>言語</Text>
+            <Box pb={4}>
               <Select>
                 <option value="jp">日本語</option>
               </Select>
-            </Flex>
+            </Box>
             <Box>
-              <Text>テキスト</Text>
+              <Textarea placeholder="オリジナルの文章を入力してください" />
             </Box>
           </Flex>
         </AccordionPanel>
