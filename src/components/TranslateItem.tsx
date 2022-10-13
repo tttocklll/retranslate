@@ -13,38 +13,44 @@ import {
   Spacer,
 } from "@chakra-ui/react";
 
-function TranslateItem() {
+interface Props {
+  NumOfItems: number;
+}
+
+function TranslateItem(props: Props) {
   return (
     <Accordion allowToggle w="full">
-      <AccordionItem>
-        <h2>
-          <AccordionButton
-            bg="white"
-            color="#e75304"
-            fontWeight="bold"
-            border="thin solid #e75304"
-            borderRadius={5}
-            _expanded={{ bg: "#e75304", color: "white" }}
-          >
-            <Box flex="1" textAlign="left">
-              オリジナル文
-            </Box>
-            <AccordionIcon />
-          </AccordionButton>
-        </h2>
-        <AccordionPanel p={4}>
-          <Flex direction="column">
-            <Box pb={4}>
-              <Select>
-                <option value="jp">日本語</option>
-              </Select>
-            </Box>
-            <Box>
-              <Textarea placeholder="オリジナルの文章を入力してください" />
-            </Box>
-          </Flex>
-        </AccordionPanel>
-      </AccordionItem>
+      {[...Array(props.NumOfItems)].map((_, i) => (
+        <AccordionItem key={i}>
+          <h2>
+            <AccordionButton
+              bg="white"
+              color="#e75304"
+              fontWeight="bold"
+              border="thin solid #e75304"
+              borderRadius={5}
+              _expanded={{ bg: "#e75304", color: "white" }}
+            >
+              <Box flex="1" textAlign="left">
+                文章{i + 1}
+              </Box>
+              <AccordionIcon />
+            </AccordionButton>
+          </h2>
+          <AccordionPanel p={4}>
+            <Flex direction="column">
+              <Box pb={4}>
+                <Select>
+                  <option value="jp">日本語</option>
+                </Select>
+              </Box>
+              <Box>
+                <Textarea placeholder="オリジナルの文章を入力してください" />
+              </Box>
+            </Flex>
+          </AccordionPanel>
+        </AccordionItem>
+      ))}
     </Accordion>
   );
 }
