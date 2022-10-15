@@ -3,15 +3,18 @@ import TranslateItem from "./TranslateItem";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
-import { useOriginalLang } from "../hooks/useOriginalLang";
 import { useAvailableLangs } from "../hooks/useAvailableLangs";
-import { useTranslateItem } from "../hooks/useTranslateItem";
+import { useTranslations } from "../hooks/useTranslations";
 
 function Translations() {
-  const { originalLang, onChangeOriginalLang } = useOriginalLang();
   const { availableLangs } = useAvailableLangs();
-  const { translateItem, onClickPlus, onClickMinus, onChangeTranslateLang } =
-    useTranslateItem();
+  const {
+    translateItem,
+    onClickPlus,
+    onClickMinus,
+    onChangeOriginalLang,
+    onChangeTranslateLang,
+  } = useTranslations();
 
   return (
     <Flex mx="10" direction="column">
@@ -22,38 +25,34 @@ function Translations() {
             key="original"
             mode="original"
             availableLangs={availableLangs}
-            item={{
-              id: 0,
-              target: originalLang,
-            }}
-            onChange={onChangeOriginalLang}
+            item={translateItem.original}
+            onChangeLang={onChangeOriginalLang}
           />
         </Accordion>
-
+        \dashboard\17
         {/* 再翻訳 */}
         <Accordion allowToggle>
-          {translateItem.map((item) => (
+          {translateItem.retranslate.map((item) => (
             <TranslateItem
               key={item.id}
               mode="retranslate"
               availableLangs={availableLangs}
               item={item}
-              onChange={onChangeTranslateLang}
+              onChangeLang={onChangeTranslateLang}
             />
           ))}
         </Accordion>
-
         <ButtonGroup size="md" justifyContent="space-around">
           <Button
             onClick={onClickPlus}
-            disabled={translateItem.length === 10}
+            disabled={translateItem.retranslate.length === 10}
             leftIcon={<FontAwesomeIcon icon={faPlus} />}
           >
             追加
           </Button>
           <Button
             onClick={onClickMinus}
-            disabled={translateItem.length === 1}
+            disabled={translateItem.retranslate.length === 1}
             leftIcon={<FontAwesomeIcon icon={faMinus} />}
           >
             削除
@@ -62,27 +61,25 @@ function Translations() {
         <Button colorScheme="orange" size="lg">
           翻訳
         </Button>
-
         {/* 最終結果 */}
         <Accordion allowToggle>
           <TranslateItem
             key="result"
             mode="result"
             availableLangs={availableLangs}
-            item={{
-              id: 100,
-              target: originalLang,
-            }}
+            item={translateItem.result}
           />
         </Accordion>
-
         <Button
           colorScheme="twitter"
           leftIcon={<FontAwesomeIcon icon={faTwitter} />}
+          as="a"
+          href="https://twitter.com/intent/tweet?text=Hello%20world"
         >
           Twitter でシェア
         </Button>
       </Stack>
+      {JSON.stringify(translateItem)}
     </Flex>
   );
 }

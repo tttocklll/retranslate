@@ -9,13 +9,13 @@ import {
   Textarea,
   Select,
 } from "@chakra-ui/react";
-import { language, translateItem } from "../types";
+import { googleTranslateLangs, translateItem } from "../types";
 
 interface Props {
   mode: "original" | "retranslate" | "result";
-  availableLangs: language[];
+  availableLangs: googleTranslateLangs[];
   item: translateItem;
-  onChange?: (e: React.ChangeEvent<HTMLSelectElement>, id?: number) => void;
+  onChangeLang?: (e: React.ChangeEvent<HTMLSelectElement>, id?: number) => void;
 }
 
 function TranslateItem(props: Props) {
@@ -42,11 +42,11 @@ function TranslateItem(props: Props) {
         <Flex direction="column">
           <Box pb={4}>
             <Select
-              value={props.item.target}
+              value={props.item.language}
               onChange={
                 props.mode === "original"
-                  ? props.onChange
-                  : (e) => props.onChange!(e, props.item.id)
+                  ? props.onChangeLang
+                  : (e) => props.onChangeLang!(e, props.item.id)
               }
               disabled={props.mode === "result"}
             >

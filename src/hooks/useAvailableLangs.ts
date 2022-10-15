@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
-import { language } from "../types";
+import { googleTranslateLangs } from "../types";
 
 export const useAvailableLangs = () => {
-  const [availableLangs, setAvailableLangs] = useState<language[]>([]);
+  const [availableLangs, setAvailableLangs] = useState<googleTranslateLangs[]>(
+    []
+  );
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
