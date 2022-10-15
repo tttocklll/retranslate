@@ -5,63 +5,71 @@ import {
   AccordionPanel,
   AccordionIcon,
   Box,
-  Button,
   Flex,
   Textarea,
-  Text,
   Select,
-  Spacer,
 } from "@chakra-ui/react";
+import { language, translateItem } from "../types";
 
 interface Props {
-  NumOfItems: number;
   mode: "original" | "retranslate" | "result";
+  availableLangs: language[];
+  item: translateItem;
+  onChange?: (e: React.ChangeEvent<HTMLSelectElement>, id?: number) => void;
 }
 
 function TranslateItem(props: Props) {
   return (
-    <Accordion allowToggle w="full">
-      {[...Array(props.NumOfItems)].map((_, i) => (
-        <AccordionItem key={i}>
-          <h2>
-            <AccordionButton
-              bg="white"
-              color="#e75304"
-              fontWeight="bold"
-              border="thin solid #e75304"
-              borderRadius={5}
-              _expanded={{ bg: "#e75304", color: "white" }}
+    <AccordionItem key={props.item.id}>
+      <h2>
+        <AccordionButton
+          bg="white"
+          color="orange.500"
+          fontWeight="bold"
+          border="thin solid"
+          borderRadius={5}
+          _expanded={{ bg: "orange.500", color: "white" }}
+        >
+          <Box flex="1" textAlign="left">
+            {(props.mode === "original" && "オリジナル文章") ||
+              (props.mode === "retranslate" && `再翻訳 ${props.item.id}`) ||
+              (props.mode === "result" && "結果")}
+          </Box>
+          <AccordionIcon />
+        </AccordionButton>
+      </h2>
+      <AccordionPanel p={4}>
+        <Flex direction="column">
+          <Box pb={4}>
+            <Select
+              value={props.item.target}
+              onChange={
+                props.mode === "original"
+                  ? props.onChange
+                  : (e) => props.onChange!(e, props.item.id)
+              }
+              disabled={props.mode === "result"}
             >
-              <Box flex="1" textAlign="left">
-                {(props.mode === "original" && "オリジナル文章") ||
-                  (props.mode === "retranslate" && `再翻訳 ${i + 1}`) ||
-                  (props.mode === "result" && "結果")}
-              </Box>
-              <AccordionIcon />
-            </AccordionButton>
-          </h2>
-          <AccordionPanel p={4}>
-            <Flex direction="column">
-              <Box pb={4}>
-                <Select>
-                  <option value="jp">日本語</option>
-                </Select>
-              </Box>
-              <Box>
-                <Textarea
-                  placeholder={
-                    props.mode === "original"
-                      ? "オリジナルの文章を入力してください"
-                      : ""
-                  }
-                  disabled={props.mode !== "original"}
-                />
-              </Box>
-            </Flex>
-          </AccordionPanel>
-        </AccordionItem>
-      ))}
-    </Accordion>
+              {props.availableLangs.map((lang) => (
+                <option key={lang.language} value={lang.language}>
+                  {lang.name}
+                </option>
+              ))}
+            </Select>
+          </Box>
+          <Box>
+            <Textarea
+              placeholder={
+                props.mode === "original"
+                  ? "オリジナルの文章を入力してください"
+                  : "翻訳結果が表示されます"
+              }
+              disabled={props.mode !== "original"}
+            />
+          </Box>
+        </Flex>
+      </AccordionPanel>
+    </AccordionItem>
   );
 }
 

@@ -11,7 +11,6 @@ function App() {
       <Box>
         <Header />
         <Translations />
-        {/* TODO: contents */}
         {/* TODO: footer */}
       </Box>
     </ChakraProvider>
