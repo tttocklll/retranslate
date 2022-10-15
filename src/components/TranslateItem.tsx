@@ -15,6 +15,7 @@ import {
 
 interface Props {
   NumOfItems: number;
+  mode: "original" | "retranslate" | "result";
 }
 
 function TranslateItem(props: Props) {
@@ -32,7 +33,9 @@ function TranslateItem(props: Props) {
               _expanded={{ bg: "#e75304", color: "white" }}
             >
               <Box flex="1" textAlign="left">
-                文章{i + 1}
+                {(props.mode === "original" && "オリジナル文章") ||
+                  (props.mode === "retranslate" && `再翻訳 ${i + 1}`) ||
+                  (props.mode === "result" && "結果")}
               </Box>
               <AccordionIcon />
             </AccordionButton>
@@ -45,7 +48,14 @@ function TranslateItem(props: Props) {
                 </Select>
               </Box>
               <Box>
-                <Textarea placeholder="オリジナルの文章を入力してください" />
+                <Textarea
+                  placeholder={
+                    props.mode === "original"
+                      ? "オリジナルの文章を入力してください"
+                      : ""
+                  }
+                  disabled={props.mode !== "original"}
+                />
               </Box>
             </Flex>
           </AccordionPanel>

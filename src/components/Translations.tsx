@@ -18,11 +18,11 @@ function Translations() {
   return (
     <Flex mx="10" direction="column">
       {/* オリジナルの文章 */}
-      <TranslateItem NumOfItems={1} />
+      <TranslateItem NumOfItems={1} mode="original" />
       <Box m={5} />
 
       {/* 再翻訳 */}
-      <TranslateItem NumOfItems={NumOfItems} />
+      <TranslateItem NumOfItems={NumOfItems} mode="retranslate" />
       <Flex>
         <Button onClick={onClickPlus} disabled={NumOfItems === 10}>
           +
@@ -34,7 +34,7 @@ function Translations() {
       <Box m={5} />
 
       {/* 最終結果 */}
-      <TranslateItem NumOfItems={1} />
+      <TranslateItem NumOfItems={1} mode="result" />
     </Flex>
   );
 }
