@@ -1,65 +1,17 @@
 import { Accordion, Button, ButtonGroup, Flex, Stack } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
 import TranslateItem from "./TranslateItem";
-import { language, translateItem } from "../types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
+import { useOriginalLang } from "../hooks/useOriginalLang";
+import { useAvailableLangs } from "../hooks/useAvailableLangs";
+import { useTranslateItem } from "../hooks/useTranslateItem";
 
 function Translations() {
-  const [availableLangs, setAvailableLangs] = useState<language[]>([]);
-  const [originalLang, setOriginalLang] = useState("ja");
-  const [translateItem, setTranslateItem] = useState<translateItem[]>([
-    {
-      id: 1,
-      target: "en",
-    },
-  ]);
-
-  useEffect(() => {
-    fetch(
-      `https://translation.googleapis.com/language/translate/v2/languages?key=${process.env.REACT_APP_GOOGLE_API_KEY}&target=ja`
-    )
-      .then((res) => res.json())
-      .then((data) => setAvailableLangs(data.data.languages))
-      .catch((err) => console.log(err));
-  }, []);
-
-  const onClickPlus = () => {
-    setTranslateItem([
-      ...translateItem,
-      {
-        id: translateItem.at(-1)!.id + 1,
-        target: "en",
-      },
-    ]);
-  };
-
-  const onClickMinus = () => {
-    if (translateItem.length > 1) {
-      setTranslateItem(translateItem.slice(0, -1));
-    }
-  };
-
-  const onChangeOriginalLang = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setOriginalLang(e.target.value);
-  };
-
-  const onChangeTranslateLang = (
-    e: React.ChangeEvent<HTMLSelectElement>,
-    id?: number
-  ) => {
-    const target = e.target.value;
-    setTranslateItem(
-      translateItem.map((item) => {
-        if (item.id === id) {
-          return { ...item, target };
-        } else {
-          return item;
-        }
-      })
-    );
-  };
+  const { originalLang, onChangeOriginalLang } = useOriginalLang();
+  const { availableLangs } = useAvailableLangs();
+  const { translateItem, onClickPlus, onClickMinus, onChangeTranslateLang } =
+    useTranslateItem();
 
   return (
     <Flex mx="10" direction="column">
