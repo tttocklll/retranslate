@@ -79,7 +79,6 @@ function Translations() {
           Twitter でシェア
         </Button>
       </Stack>
-      {JSON.stringify(translateItem)}
     </Flex>
   );
 }
