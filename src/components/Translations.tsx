@@ -29,7 +29,6 @@ function Translations() {
             onChangeLang={onChangeOriginalLang}
           />
         </Accordion>
-        \dashboard\17
         {/* 再翻訳 */}
         <Accordion allowToggle>
           {translateItem.retranslate.map((item) => (
@@ -79,7 +78,6 @@ function Translations() {
           Twitter でシェア
         </Button>
       </Stack>
-      {JSON.stringify(translateItem)}
     </Flex>
   );
 }
