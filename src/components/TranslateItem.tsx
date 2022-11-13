@@ -15,6 +15,7 @@ interface Props {
   availableLangs: googleTranslateLangs[];
   item: translateItem;
   onChangeLang?: (e: React.ChangeEvent<HTMLSelectElement>, id?: number) => void;
+  onChangeOriginalText?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
 function TranslateItem(props: Props) {
@@ -64,6 +65,8 @@ function TranslateItem(props: Props) {
                   : "翻訳結果が表示されます"
               }
               disabled={props.mode !== "original"}
+              onChange={(e) => props.onChangeOriginalText!(e)}
+              value={props.item.text}
             />
           </Box>
         </Flex>

@@ -14,6 +14,8 @@ function Translations() {
     onClickMinus,
     onChangeOriginalLang,
     onChangeTranslateLang,
+    onChangeOriginalText,
+    onClickTranslate,
   } = useTranslations();
 
   return (
@@ -27,6 +29,7 @@ function Translations() {
             availableLangs={availableLangs}
             item={translateItem.original}
             onChangeLang={onChangeOriginalLang}
+            onChangeOriginalText={onChangeOriginalText}
           />
         </Accordion>
         {/* 再翻訳 */}
@@ -57,7 +60,7 @@ function Translations() {
             削除
           </Button>
         </ButtonGroup>
-        <Button colorScheme="orange" size="lg">
+        <Button colorScheme="orange" size="lg" onClick={onClickTranslate}>
           翻訳
         </Button>
         {/* 最終結果 */}
