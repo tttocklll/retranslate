@@ -7,7 +7,12 @@ import {
   Flex,
   Textarea,
   Select,
+  Spinner,
+  Alert,
+  AlertIcon,
 } from "@chakra-ui/react";
+import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { googleTranslateLangs, translateItem } from "../types";
 
 interface Props {
@@ -30,16 +35,30 @@ function TranslateItem(props: Props) {
           borderRadius={5}
           _expanded={{ bg: "orange.500", color: "white" }}
         >
+          {props.item.isLoading && <Spinner mr={5} />}
+          {(props.item.isSuccessful === undefined && undefined) ||
+            (props.item.isSuccessful === true && (
+              <FontAwesomeIcon icon={faCheck} style={{ marginRight: 5 }} />
+            )) ||
+            (props.item.isSuccessful === false && (
+              <FontAwesomeIcon icon={faXmark} style={{ marginRight: 5 }} />
+            ))}
           <Box flex="1" textAlign="left">
             {(props.mode === "original" && "オリジナル文章") ||
               (props.mode === "retranslate" && `再翻訳 ${props.item.id}`) ||
               (props.mode === "result" && "結果")}
           </Box>
+
           <AccordionIcon />
         </AccordionButton>
       </h2>
       <AccordionPanel p={4}>
         <Flex direction="column">
+          {props.item.errorMessage && (
+            <Alert status="error" mb={4}>
+              <AlertIcon /> {props.item.errorMessage}
+            </Alert>
+          )}
           <Box pb={4}>
             <Select
               value={props.item.language}
@@ -64,8 +83,12 @@ function TranslateItem(props: Props) {
                   ? "オリジナルの文章を入力してください"
                   : "翻訳結果が表示されます"
               }
-              disabled={props.mode !== "original"}
-              onChange={(e) => props.onChangeOriginalText!(e)}
+              onChange={
+                props.mode === "original"
+                  ? (e) => props.onChangeOriginalText!(e)
+                  : undefined
+              }
+              readOnly={props.mode !== "original"}
               value={props.item.text}
             />
           </Box>

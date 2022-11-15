@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { translations } from "../types";
+import { translateItem, translations } from "../types";
 
 export const useTranslations = () => {
   const [translateItem, setTranslateItem] = useState<translations>({
@@ -7,12 +7,14 @@ export const useTranslations = () => {
       id: 0,
       language: "ja",
       text: "",
+      isLoading: false,
     },
-    retranslate: [{ id: 1, language: "en", text: "" }],
+    retranslate: [{ id: 1, language: "en", text: "", isLoading: false }],
     result: {
       id: 0,
       language: "ja",
       text: "",
+      isLoading: false,
     },
   });
   console.log(translateItem);
@@ -26,6 +28,7 @@ export const useTranslations = () => {
           id: translateItem.retranslate.at(-1)!.id + 1,
           language: "en",
           text: "",
+          isLoading: false,
         },
       ],
     });
@@ -81,17 +84,49 @@ export const useTranslations = () => {
   };
 
   const translate = async (text: string, source: string, target: string) => {
-    const res = await fetch(
-      `${process.env.REACT_APP_GAS_URL}?text=${text}&source=${source}&target=${target}`
+    try {
+      const res = await fetch(
+        // `${process.env.REACT_APP_GAS_URL}?text=${text}&source=${source}&target=${target}`
+        `https://script.google.com/macros/s/AKfycbzit5umP0HEsY0gIjWm1rgHNEu9kR9NUoBVMV8bbJLQpM4KEwTUya-p7jHNybMOOdBh/exec?text=${text}&source=${source}&target=${target}`
+      );
+      const data = await res.json();
+      if (data.code >= 400) {
+        throw new Error(data.text);
+      }
+      console.log(data);
+      return data.text;
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
+  };
+
+  const resetResults = () => {
+    const retranslate: translateItem[] = translateItem.retranslate.map(
+      (item) => {
+        return { ...item, text: "", isLoading: false, isSuccessful: undefined };
+      }
     );
-    const data = await res.json();
-    console.log(data);
-    return data.text;
+
+    const result: translateItem = {
+      ...translateItem.result,
+      text: "",
+      isLoading: false,
+      isSuccessful: undefined,
+    };
+
+    const resetTranslateItem = {
+      ...translateItem,
+      retranslate,
+      result,
+    };
+
+    setTranslateItem(resetTranslateItem);
+    return resetTranslateItem;
   };
 
   const onClickTranslate = async () => {
-    const newTranslateItem = { ...translateItem };
-    for (let i = 0; i <= newTranslateItem.retranslate.length; i++) {
+    let newTranslateItem = resetResults();
+    for (let i = 0; i <= translateItem.retranslate.length; i++) {
       const source =
         i === 0
           ? newTranslateItem.original
@@ -100,14 +135,29 @@ export const useTranslations = () => {
         i === newTranslateItem.retranslate.length
           ? newTranslateItem.result
           : newTranslateItem.retranslate[i];
-      target.text = await translate(
-        source.text,
-        source.language,
-        target.language
-      );
-    }
+      target.isLoading = true;
+      setTranslateItem(newTranslateItem);
 
-    setTranslateItem(newTranslateItem);
+      newTranslateItem = { ...newTranslateItem };
+      try {
+        target.text = await translate(
+          source.text,
+          source.language,
+          target.language
+        );
+        target.isLoading = false;
+        target.isSuccessful = true;
+        setTranslateItem(newTranslateItem);
+        newTranslateItem = { ...newTranslateItem };
+      } catch (error: any) {
+        target.isLoading = false;
+        target.isSuccessful = false;
+        target.errorMessage = error.message;
+        setTranslateItem(newTranslateItem);
+        console.error(error);
+        break;
+      }
+    }
   };
 
   return {
