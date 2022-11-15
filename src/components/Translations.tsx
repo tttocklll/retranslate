@@ -33,7 +33,7 @@ function Translations() {
           />
         </Accordion>
         {/* 再翻訳 */}
-        <Accordion allowToggle>
+        <Accordion allowMultiple defaultIndex={[0]}>
           {translateItem.retranslate.map((item) => (
             <TranslateItem
               key={item.id}
@@ -60,7 +60,12 @@ function Translations() {
             削除
           </Button>
         </ButtonGroup>
-        <Button colorScheme="orange" size="lg" onClick={onClickTranslate}>
+        <Button
+          colorScheme="orange"
+          size="lg"
+          onClick={onClickTranslate}
+          disabled={!translateItem.original.text}
+        >
           翻訳
         </Button>
         {/* 最終結果 */}
