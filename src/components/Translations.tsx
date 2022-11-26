@@ -11,6 +11,7 @@ import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import { useAvailableLangs } from "../hooks/useAvailableLangs";
 import { useTranslations } from "../hooks/useTranslations";
+import { dedent } from "ts-dedent";
 
 function Translations() {
   const { availableLangs } = useAvailableLangs();
@@ -25,7 +26,18 @@ function Translations() {
   } = useTranslations();
 
   const createTwitterText = () => {
-    const text = `「${translateItem.original.text}」を再翻訳すると「${translateItem.result.text}」 #さいほんやくくん
+    const originalText =
+      translateItem.original.text.length <= 50
+        ? translateItem.original.text
+        : translateItem.original.text.slice(0, 50) + "...";
+    const resultText =
+      translateItem.result.text.length <= 50
+        ? translateItem.result.text
+        : translateItem.result.text.slice(0, 50) + "...";
+    const text = dedent`「${originalText}」
+    を再翻訳すると
+    「${resultText}」
+    #さいほんやくくん
     https://retranslate.tttocklll.dev/`;
     return encodeURIComponent(text);
   };
