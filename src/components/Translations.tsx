@@ -24,6 +24,12 @@ function Translations() {
     onClickTranslate,
   } = useTranslations();
 
+  const createTwitterText = () => {
+    const text = `「${translateItem.original.text}」を再翻訳すると「${translateItem.result.text}」 #さいほんやくくん
+    https://retranslate.tttocklll.dev/`;
+    return encodeURIComponent(text);
+  };
+
   return (
     <Container maxWidth="md" py="5" flexGrow={1}>
       <Stack spacing={5}>
@@ -87,7 +93,7 @@ function Translations() {
           colorScheme="twitter"
           leftIcon={<FontAwesomeIcon icon={faTwitter} />}
           as="a"
-          href="https://twitter.com/intent/tweet?text=Hello%20world"
+          href={`https://twitter.com/intent/tweet?text=${createTwitterText()}`}
         >
           Twitter でシェア
         </Button>
