@@ -27,14 +27,7 @@ function TranslateItem(props: Props) {
   return (
     <AccordionItem key={props.item.id}>
       <h2>
-        <AccordionButton
-          bg="white"
-          color="orange.500"
-          fontWeight="bold"
-          border="thin solid"
-          borderRadius={5}
-          _expanded={{ bg: "orange.500", color: "white" }}
-        >
+        <AccordionButton bg="white" color="orange.500" fontWeight="bold">
           {props.item.isLoading && <Spinner mr={5} />}
           {(props.item.isSuccessful === undefined && undefined) ||
             (props.item.isSuccessful === true && (

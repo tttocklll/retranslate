@@ -1,18 +1,19 @@
 import React from "react";
 import "./App.css";
-import { Box, ChakraProvider, Flex } from "@chakra-ui/react";
+import { ChakraProvider, Flex } from "@chakra-ui/react";
 import { theme } from "./Theme";
 import Header from "./components/Header";
 import Translations from "./components/Translations";
+import Footer from "./components/Footer";
 
 function App() {
   return (
     <ChakraProvider theme={theme}>
-      <Box>
+      <Flex direction="column" minH="100vh">
         <Header />
         <Translations />
-        {/* TODO: footer */}
-      </Box>
+        <Footer />
+      </Flex>
     </ChakraProvider>
   );
 }

@@ -6,10 +6,8 @@ export const theme = extendTheme({
       body: {
         backgroundColor: "white",
         color: "gray.800",
+        fontFamily: "'M PLUS Rounded 1c', sans-serif",
       },
     },
   },
 });
-
-// /* CVS */
-// #fb8806,#fbaf0a,#a92d04,#fba35a,#e75304

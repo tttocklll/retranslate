@@ -17,7 +17,6 @@ export const useTranslations = () => {
       isLoading: false,
     },
   });
-  console.log(translateItem);
 
   const onClickPlus = () => {
     setTranslateItem({
@@ -92,7 +91,6 @@ export const useTranslations = () => {
       if (data.code >= 400) {
         throw new Error(data.text);
       }
-      console.log(data);
       return data.text;
     } catch (error: any) {
       throw new Error(error.message);

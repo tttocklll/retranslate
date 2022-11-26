@@ -1,4 +1,10 @@
-import { Accordion, Button, ButtonGroup, Flex, Stack } from "@chakra-ui/react";
+import {
+  Accordion,
+  Button,
+  ButtonGroup,
+  Stack,
+  Container,
+} from "@chakra-ui/react";
 import TranslateItem from "./TranslateItem";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
@@ -19,10 +25,10 @@ function Translations() {
   } = useTranslations();
 
   return (
-    <Flex mx="10" direction="column">
+    <Container maxWidth="md" py="5" flexGrow={1}>
       <Stack spacing={5}>
         {/* オリジナルの文章 */}
-        <Accordion allowToggle>
+        <Accordion allowToggle defaultIndex={[0]}>
           <TranslateItem
             key="original"
             mode="original"
@@ -33,7 +39,7 @@ function Translations() {
           />
         </Accordion>
         {/* 再翻訳 */}
-        <Accordion allowMultiple defaultIndex={[0]}>
+        <Accordion allowMultiple>
           {translateItem.retranslate.map((item) => (
             <TranslateItem
               key={item.id}
@@ -69,7 +75,7 @@ function Translations() {
           翻訳
         </Button>
         {/* 最終結果 */}
-        <Accordion allowToggle>
+        <Accordion allowToggle defaultIndex={[0]}>
           <TranslateItem
             key="result"
             mode="result"
@@ -86,7 +92,7 @@ function Translations() {
           Twitter でシェア
         </Button>
       </Stack>
-    </Flex>
+    </Container>
   );
 }
 
